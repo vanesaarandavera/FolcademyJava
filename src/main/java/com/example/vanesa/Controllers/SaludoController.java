@@ -1,4 +1,4 @@
-package com.example.vanesa.Controlers;
+package com.example.vanesa.Controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/saludo")
-public class SaludoControler {
+public class SaludoController {
     @GetMapping("/hello")
     public String hello(){
         return "Hola mi nombre es Vanesa";
