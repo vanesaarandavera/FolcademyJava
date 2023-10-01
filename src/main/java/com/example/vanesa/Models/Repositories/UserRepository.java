@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository <UserEntity, Integer> {
     Boolean existsByEmail(String email);
-
+    Boolean existsByName(String name);
+    Boolean existsByCelular(Integer celular);
     @Override
     List<UserEntity> findAll();
 
-    Boolean existsByCelular(int celular);
+
+
 }

@@ -33,26 +33,21 @@ public class UserService<UserEditDTO> {
 
     public UserReadDTO add(UserAddDTO userAddDTO) {
         try {
+            //Verifica si existen usuarios con esos datos
+            Boolean nameExist = userRepository.existsByName(userAddDTO.getName());
             Boolean emailExist = userRepository.existsByEmail(userAddDTO.getEmail());
-            if (emailExist) {
-                throw new UserBadRequestException("ya existe un usuario con este email");
-            }
-
-            UserEntity newUserEntity = userMapper.userAddDTOToUserEntity(userAddDTO);
-            UserEntity savedUserEntity = userRepository.save(newUserEntity);
-
-            return userMapper.userEntityToUserReadDTO(savedUserEntity);
-        } catch (UserBadRequestException e) {
-            throw new RuntimeException("Error al agregar usuario: " + e.getMessage(), e);
-        }
-    }
-
-    public UserReadDTO addUser(UserAddDTO userAddDTO) {
-        try {
             Boolean celularExist = userRepository.existsByCelular(userAddDTO.getCelular());
 
-            if (celularExist) {
-                throw new UserBadRequestException("ya existe un usuario con este celular");
+            if (nameExist){
+                throw new UserBadRequestException("ya existe un usuario con este nombre");
+            } else {
+                if (emailExist) {
+                    throw new UserBadRequestException("ya existe un usuario con este email");
+                }else{
+                    if(celularExist){
+                        throw new UserBadRequestException("ya existe un usuario con este numero de celular");
+                    }
+                }
             }
 
             UserEntity newUserEntity = userMapper.userAddDTOToUserEntity(userAddDTO);
@@ -63,9 +58,17 @@ public class UserService<UserEditDTO> {
             throw new RuntimeException("Error al agregar usuario: " + e.getMessage(), e);
         }
     }
+
 
 
     public UserReadDTO findById(Integer userId) {
+        // Verificar si el usuario con el ID proporcionado existe en la base de datos
+        boolean existeUsuario = userRepository.existsById(userId);
+
+        if (!existeUsuario) {
+            throw new UserNotFoundException("No se encontró un usuario con el ID " + userId);
+        }
+
         try {
             UserEntity userEntity = userRepository.findById(userId)
                     .orElseThrow(() -> new UserNotFoundException("No se encontró un usuario con ese identificador"));
@@ -77,33 +80,54 @@ public class UserService<UserEditDTO> {
             throw new RuntimeException("Error al buscar usuario por ID", e);
         }
     }
-    
+
     public UserReadDTO edit(Integer userId, com.example.vanesa.Models.Dtos.UserEditDTO user) {
+        // Verificar si el usuario con el ID proporcionado existe en la base de datos
+        boolean existeUsuario = userRepository.existsById(userId);
+
+        if (!existeUsuario) {
+            throw new UserNotFoundException("No se encontró un usuario con el ID " + userId);
+        }
+
         try {
             UserEntity oldUser = userRepository.findById(userId)
-                    .orElseThrow(()-> new UserNotFoundException("No se encontro un usuario con ese identificador"));
+                    .orElseThrow(() -> new UserNotFoundException("No se encontró un usuario con ese identificador"));
 
-            if(!user.getName().isBlank()) oldUser.setName(user.getName());
-            if(!user.getSurname().isBlank()) oldUser.setSurname(user.getSurname());
+            if (!user.getName().isBlank()) {
+                oldUser.setName(user.getName());
+            }
+            if (!user.getSurname().isBlank()) {
+                oldUser.setSurname(user.getSurname());
+            }
 
             UserEntity newUser = userRepository.save(oldUser);
 
             return userMapper.userEntityToUserReadDTO(newUser);
-        }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Error al editar usuario por ID", e);
         }
     }
+
 
     public UserReadDTO deleteById(Integer userId) {
-        try{
-            UserEntity user = userRepository.findById(userId)
-                    .orElseThrow(()-> new UserNotFoundException("No se encontro un usuario con ese identificador"));
-                userRepository.delete(user);
+        // Verificar si el usuario con el ID proporcionado existe en la base de datos
+        boolean existeUsuario = userRepository.existsById(userId);
 
-                return userMapper.userEntityToUserReadDTO(user);
-        }catch (Exception e){
-            throw new RuntimeException(e.getMessage());
+        if (!existeUsuario) {
+            throw new UserNotFoundException("No se encontró un usuario con el ID " + userId);
+        }
+
+        try {
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new UserNotFoundException("No se encontró un usuario con ese identificador"));
+
+            userRepository.delete(user);
+
+            return userMapper.userEntityToUserReadDTO(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar usuario por ID", e);
         }
     }
+
 }
 

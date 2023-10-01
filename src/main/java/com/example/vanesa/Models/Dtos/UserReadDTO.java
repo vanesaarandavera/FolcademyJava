@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserReadDTO {
     Integer id;
     String name;
-    int celular;
+    Integer celular;
     String surname;
     String email;
 }
