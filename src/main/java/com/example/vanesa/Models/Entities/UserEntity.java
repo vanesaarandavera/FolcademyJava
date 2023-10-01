@@ -19,6 +19,9 @@ public class UserEntity {
     @Column(name = "nombre", columnDefinition = "VARCHAR(100)")
     private String name;
 
+    @Column(name = "celular", columnDefinition = "INT")
+    private int celular;
+
     @Column(name = "apellido", columnDefinition = "VARCHAR(100)")
     private String surname;
 

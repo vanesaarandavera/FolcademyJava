@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class VanesaApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(VanesaApplication.class, args);
 	}
 

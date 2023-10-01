@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserReadDTO {
-    Integer id;
+public class UserEditDTO {
     String name;
-    int celular;
     String surname;
-    String email;
+
+
+
 }
+
+
