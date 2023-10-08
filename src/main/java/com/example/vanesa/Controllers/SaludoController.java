@@ -18,4 +18,5 @@ public class SaludoController {
     public String goodbye() {
         return "Hasta luego!";
     }
+
 }
