@@ -52,4 +52,5 @@ public class AuthController {
         // En un caso real, puedes querer devolver el token dentro de un objeto para mayor flexibilidad.
         return ResponseEntity.ok("Bearer " + jwt);
     }
+
 }

@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserReadDTO {
-    Integer id;
-    String name;
-    Integer celular;
-    String surname;
-    String email;
+    private Integer id;
+    private String name;
+    private Integer celular;
+    private String surname;
+    private String email;
+    private AddressReadDTO address;
 }

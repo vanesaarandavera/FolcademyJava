@@ -9,16 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserAddDTO {
 
-
-    Integer id;
-    String name;
-    Integer celular;
-    String surname;
-    String email;
+    private String name;
+    private Integer celular;
+    private String surname;
+    private String email;
     private String password;
+    private AddressReadDTO address;
 
 
-    public String getPassword() {
-        return this.password;
-    }
 }

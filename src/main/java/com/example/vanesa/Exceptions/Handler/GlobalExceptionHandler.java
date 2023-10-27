@@ -34,4 +34,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageDTO> badRequestHandler (HttpServletRequest req, Exception e){
         return new ResponseEntity<>(new ErrorMessageDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
+
+
 }

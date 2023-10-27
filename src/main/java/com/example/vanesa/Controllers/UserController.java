@@ -5,6 +5,7 @@ import com.example.vanesa.Models.Dtos.UserAddDTO;
 import com.example.vanesa.Models.Dtos.UserEditDTO;
 import com.example.vanesa.Models.Dtos.UserReadDTO;
 import com.example.vanesa.Services.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,10 @@ public class UserController {
 
 
     @GetMapping
-    public ResponseEntity<List<UserReadDTO>> findAllUsers(){
-
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<Page<UserReadDTO>> findAll(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size) {
+        return ResponseEntity.ok(userService.findAll(page, size));
     }
     @GetMapping("/{userId}")
     public ResponseEntity<UserReadDTO> findById(@PathVariable Integer userId) {

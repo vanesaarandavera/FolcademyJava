@@ -20,7 +20,7 @@ public class UserEntity {
     private String name;
 
     @Column(name = "celular", columnDefinition = "INT")
-    private int celular;
+    private Integer celular;
 
     @Column(name = "apellido", columnDefinition = "VARCHAR(100)")
     private String surname;
@@ -31,5 +31,8 @@ public class UserEntity {
     @Column(name = "contraseña", columnDefinition = "VARCHAR(100)")
     private String password;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private AddressEntity address;
 }
 

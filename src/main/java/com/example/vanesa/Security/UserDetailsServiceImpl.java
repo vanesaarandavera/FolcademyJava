@@ -1,7 +1,9 @@
 package com.example.vanesa.Security;
 
 import com.example.vanesa.Models.Dtos.SignupRequestDTO;
+import com.example.vanesa.Models.Entities.AddressEntity;
 import com.example.vanesa.Models.Entities.UserEntity;
+import com.example.vanesa.Models.Repositories.AddressRepository;
 import com.example.vanesa.Models.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -16,6 +18,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository usuarioRepository;
+    @Autowired
+    private AddressRepository addressRepository;
     @Lazy
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -26,11 +30,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         UserEntity newUser = new UserEntity();
+        newUser.setCelular(signupRequest.getCelular());
         newUser.setName(signupRequest.getName());
         newUser.setSurname(signupRequest.getSurname());
         newUser.setEmail(signupRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 
+        AddressEntity newAddress = new AddressEntity();
+        newAddress.setStreet(signupRequest.getAddress().getStreet());
+        newAddress.setNumber(signupRequest.getAddress().getNumber());
+        addressRepository.save(newAddress);
+
+        newUser.setAddress(newAddress);
         return usuarioRepository.save(newUser);
     }
 

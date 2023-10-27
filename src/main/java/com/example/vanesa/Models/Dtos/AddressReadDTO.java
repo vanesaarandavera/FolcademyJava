@@ -7,13 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEditDTO {
-   private  String name;
-   private String surname;
-   private AddressReadDTO addressReadDTO;
-
-
-
+public class AddressReadDTO {
+    private String street;
+    private String number;
 }
-
-

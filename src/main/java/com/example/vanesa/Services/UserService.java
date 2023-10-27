@@ -8,8 +8,10 @@ import com.example.vanesa.Models.Dtos.UserReadDTO;
 import com.example.vanesa.Models.Entities.UserEntity;
 import com.example.vanesa.Models.Mappers.UserMapper;
 import com.example.vanesa.Models.Repositories.UserRepository;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,12 +25,17 @@ public class UserService<UserEditDTO> {
         this.userMapper = userMapper;
     }
 
-    public List<UserReadDTO> findAll() {
-        return userRepository
-                .findAll()
+    public Page<UserReadDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+
+        Page<UserEntity> userEntities = userRepository.findAll(pageable);
+
+        List<UserReadDTO> users = userEntities
                 .stream()
-                .map(userMapper::userEntityToUserReadDTO)
+                .map(userEntity -> userMapper.userEntityToUserReadDTO(userEntity    ))
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(users, pageable, userEntities.getTotalElements());
     }
 
     public UserReadDTO add(UserAddDTO userAddDTO) {
